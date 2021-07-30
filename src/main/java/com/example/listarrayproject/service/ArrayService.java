@@ -10,19 +10,28 @@ import java.util.stream.Collectors;
 @Service
 public class ArrayService {
 
-    public static List<Integer> getFlattenList(List<List<Integer>> nestedList) throws ValidationException {
+    public List<Integer> getFlattenedList(List<List<Integer>> nestedList) throws ValidationException {
         validateList(nestedList);
+        return makeFlattenedList(nestedList);
+    }
+
+    private void validateList(List<List<Integer>> nestedList) throws ValidationException {
+        List<Integer> flattenedList = makeFlattenedList(nestedList);
+
+        if (nestedList.isEmpty()) {
+            throw new ValidationException("The nestedList is empty!");
+        }
+
+        flattenedList.forEach(e -> {
+            if (e == null) {
+                throw new NullPointerException("The nestedList contains null!");
+            }
+        });
+    }
+
+    private List<Integer> makeFlattenedList(List<List<Integer>> nestedList) {
         return nestedList.stream()
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-    }
-
-    private static void validateList(List<List<Integer>> nestedList) throws ValidationException {
-       if (nestedList.isEmpty()) {
-           throw new ValidationException("The nestedList is empty!");
-       }
-       if (nestedList.stream().iterator().next().contains(null) ) {
-            throw new NullPointerException("The nestedList contains null!");
-        }
     }
 }

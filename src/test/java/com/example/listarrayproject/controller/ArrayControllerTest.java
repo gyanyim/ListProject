@@ -37,7 +37,8 @@ class ArrayControllerTest {
                 .all()
                 .body(givenANestedList())
                 .contentType(ContentType.JSON)
-                .when().get("test/list")
+                .when()
+                .get("test/list1")
                 .then()
                 .log()
                 .all()
@@ -48,24 +49,20 @@ class ArrayControllerTest {
         List<Integer> listInteger = new ArrayList<>();
         String[] tmpArray = listString.split(",");
 
-        //Cut the [ from the String
+        // Cut the [ from the String
         tmpArray[0] = tmpArray[0].substring(1);
 
-        //Cut the ] from the String
+        // Cut the ] from the String
         tmpArray[tmpArray.length - 1] = tmpArray[tmpArray.length - 1].substring(0, 1);
 
-        //Parse the number from String to Integer
-        Arrays.asList(tmpArray).forEach(oneString -> {
-            listInteger.add(Integer.parseInt(oneString));
-        });
+        // Parse the number from String to Integer
+        Arrays.asList(tmpArray).forEach(oneString -> listInteger.add(Integer.parseInt(oneString)));
 
-        //Check the flattenList number with the response numbers
-        listInteger.forEach(oneInteger -> {
-            assertTrue(flattenList().contains(oneInteger));
-        });
+        // Check the flattenedList numbers with the response numbers
+        listInteger.forEach(oneInteger -> assertTrue(flattenedList().contains(oneInteger)));
     }
 
-    private List<Integer> flattenList() {
+    private List<Integer> flattenedList() {
        return asList(1, 3, 5, 2, 11, 23, 41, 4, 9, 0);
    }
 
