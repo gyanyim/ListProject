@@ -12,18 +12,18 @@ import static java.util.Arrays.asList;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("test")
+@RequestMapping("lists")
 public class ArrayController {
 
     @Autowired
     private final ArrayService arrayService;
 
-    @GetMapping("/list1")
+    @GetMapping("/flatten1")
     public List<Integer> getFlattenedList(@RequestBody List<List<Integer>> nestedList) throws ValidationException {
         return arrayService.getFlattenedList(nestedList);
     }
 
-    @GetMapping("/list2")
+    @GetMapping("/flatten2")
     public List<Integer> getFlattenedList(@RequestParam List<Integer> listOne,
                                           @RequestParam List<Integer> listTwo,
                                           @RequestParam List<Integer> listThree,
