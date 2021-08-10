@@ -26,12 +26,12 @@ class ArrayControllerTest {
     private int port;
 
     @BeforeEach
-    public void beforeAll() {
+    void beforeAll() {
         RestAssured.port = port;
     }
 
     @Test
-    public void controllerListsTest() {
+    void controllerListsTest() {
         String listString = given()
                 .log()
                 .all()

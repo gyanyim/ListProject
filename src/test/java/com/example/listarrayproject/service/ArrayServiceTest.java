@@ -36,26 +36,26 @@ class ArrayServiceTest {
     private ArrayService arrayService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.arrayService = new ArrayService();
     }
 
     @Test
-    public void givenANestedList_whenGetFlattenedListMethod_thenReturnAFlattenList() throws ValidationException {
+    void givenANestedList_whenGetFlattenedListMethod_thenReturnAFlattenList() throws ValidationException {
         List<Integer> flattenList = arrayService.getFlattenedList(ORIGINAL_LIST);
         List<Integer> expectedList = asList(1, 3, 5, 2, 11, 23, 41, 4, 9, 0);
         assertEquals(expectedList, flattenList);
     }
 
     @Test
-    public void givenANestedListWithoutElement_whenGetFlattenedListMethod_thenReturnValidationException() {
+    void givenANestedListWithoutElement_whenGetFlattenedListMethod_thenReturnValidationException() {
         Exception thrown = assertThrows(ValidationException.class, () -> arrayService.getFlattenedList(EMPTY_LIST));
         assertThat(thrown, notNullValue());
         assertThat(thrown.getMessage(), is("The nestedList is empty!"));
     }
 
     @Test
-    public void givenANestedListWithNullElement_whenGetFlattenedListMethod_thenReturnValidationException() {
+    void givenANestedListWithNullElement_whenGetFlattenedListMethod_thenReturnValidationException() {
         Exception thrown = assertThrows(NullPointerException.class, () -> arrayService.getFlattenedList(LIST_WITH_NULL));
         assertThat(thrown, notNullValue());
         assertThat(thrown.getMessage(), is("The nestedList contains null!"));
