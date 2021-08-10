@@ -16,11 +16,11 @@ public class ArrayService {
     }
 
     private void validateList(List<List<Integer>> nestedList) throws ValidationException {
-        List<Integer> flattenedList = makeFlattenedList(nestedList);
-
         if (nestedList.isEmpty()) {
             throw new ValidationException("The nestedList is empty!");
         }
+
+        List<Integer> flattenedList = makeFlattenedList(nestedList);
 
         flattenedList.forEach(e -> {
             if (e == null) {
