@@ -5,7 +5,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import javax.xml.bind.ValidationException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ public class ValidatorClass implements Validator {
     }
 
     @Override
-    public void validate(Object target, Errors errors) throws IllegalArgumentException{
+    public void validate(Object target, Errors errors) throws IllegalArgumentException {
         ValidationUtils.rejectIfEmpty(errors, "nestedList", "nestedList.empty");
         List<List<Integer>> nestedList = (List<List<Integer>>) target;
 

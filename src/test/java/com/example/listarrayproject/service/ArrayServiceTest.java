@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.validation.Errors;
 
+import javax.xml.bind.ValidationException;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,38 +35,29 @@ class ArrayServiceTest {
 
     private ArrayService arrayService;
 
-    private ValidatorClass validatorClass;
-    private Errors errors;
-
     @BeforeEach
     void setUp() {
         this.arrayService = new ArrayService();
     }
 
     @Test
-    void givenANestedList_whenGetFlattenedListMethod_thenReturnAFlattenList() throws IllegalArgumentException {
+    void givenANestedList_whenGetFlattenedListMethod_thenReturnAFlattenList() throws ValidationException {
         List<Integer> flattenList = arrayService.getFlattenedList(ORIGINAL_LIST);
         List<Integer> expectedList = asList(1, 3, 5, 2, 11, 23, 41, 4, 9, 0);
         assertEquals(expectedList, flattenList);
     }
 
-//    @Test
-//    void test() throws IllegalArgumentException {
-//        assertThat(validatorClass.validate(EMPTY_LIST, errors), equals("NestedList is empty!"));
-//    }
+    @Test
+    void givenANestedListWithoutElement_whenGetFlattenedListMethod_thenReturnValidationException() {
+        Exception thrown = assertThrows(ValidationException.class, () -> arrayService.getFlattenedList(EMPTY_LIST));
+        assertThat(thrown, notNullValue());
+        assertThat(thrown.getMessage(), is("The nestedList is empty!"));
+    }
 
-
-//    @Test
-//    void givenANestedListWithoutElement_whenGetFlattenedListMethod_thenReturnValidationException() {
-//        Exception thrown = assertThrows(IllegalArgumentException.class, () -> arrayService.getFlattenedList(EMPTY_LIST));
-//        assertThat(thrown, notNullValue());
-//        assertThat(thrown.getMessage(), is("The nestedList is empty!"));
-//    }
-//
-//    @Test
-//    void givenANestedListWithNullElement_whenGetFlattenedListMethod_thenReturnValidationException() {
-//        Exception thrown = assertThrows(NullPointerException.class, () -> arrayService.getFlattenedList(LIST_WITH_NULL));
-//        assertThat(thrown, notNullValue());
-//        assertThat(thrown.getMessage(), is("The nestedList contains null!"));
-//    }
+    @Test
+    void givenANestedListWithNullElement_whenGetFlattenedListMethod_thenReturnValidationException()  {
+        Exception thrown = assertThrows(NullPointerException.class, () -> arrayService.getFlattenedList(LIST_WITH_NULL));
+        assertThat(thrown, notNullValue());
+        assertThat(thrown.getMessage(), is("The nestedList contains null!"));
+    }
 }
