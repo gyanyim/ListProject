@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Service
 public class ArrayService {
 
-    public List<Integer> getFlattenedList(List<List<Integer>> nestedList) throws ValidationException {
+    public List<Integer> getFlattenedList(List<List<Integer>> nestedList) throws IllegalArgumentException {
 //        validateList(nestedList);
         return makeFlattenedList(nestedList);
     }

@@ -22,7 +22,7 @@ public class ArrayController {
     public List<Integer> getFlattenedList(@RequestParam List<Integer> listOne,
                                           @RequestParam List<Integer> listTwo,
                                           @RequestParam List<Integer> listThree,
-                                          @RequestParam List<Integer> listFour) throws ValidationException {
+                                          @RequestParam List<Integer> listFour) throws IllegalArgumentException {
         List<List<Integer>> nestedList = asList(listOne, listTwo, listThree, listFour);
         return arrayService.getFlattenedList(nestedList);
     }
