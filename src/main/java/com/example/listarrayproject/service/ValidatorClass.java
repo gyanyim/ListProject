@@ -1,11 +1,16 @@
 package com.example.listarrayproject.service;
 
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import javax.xml.bind.ValidationException;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Component
 public class ValidatorClass implements Validator {
 
     @Override
@@ -14,16 +19,28 @@ public class ValidatorClass implements Validator {
     }
 
     @Override
-    public void validate(Object nestedList, Errors err) {
-        ValidationUtils.rejectIfEmpty(err, "nestedList", "nestedList.empty");
+    public void validate(Object target, Errors errors) throws IllegalArgumentException{
+        ValidationUtils.rejectIfEmpty(errors, "nestedList", "nestedList.empty");
+        List<List<Integer>> nestedList = (List<List<Integer>>) target;
 
-//        List<Integer> flattenedList = makeFlattenedList((List<List<Integer>>) nestedList);
-//
-//        flattenedList.forEach(e -> {
-//            if (e == null) {
-//                err.rejectValue("nestedList", "The list contains null value.");
-//            }
-//        });
+        if (nestedList.isEmpty()) {
+            errors.rejectValue("nestedList", "NestedList is empty!");
+            throw new IllegalArgumentException("NestedList is empty!");
+        }
+
+        List<Integer> flattenedList = makeFlattenedList((List<List<Integer>>) nestedList);
+
+        flattenedList.forEach(e -> {
+            if (e == null) {
+                errors.rejectValue("nestedList", "The list contains null value.");
+                throw new IllegalArgumentException("NestedList is empty!");
+            }
+        });
     }
 
+    private List<Integer> makeFlattenedList(List<List<Integer>> nestedList) {
+        return nestedList.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
 }
