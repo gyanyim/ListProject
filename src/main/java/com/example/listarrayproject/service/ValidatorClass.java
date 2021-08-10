@@ -33,7 +33,7 @@ public class ValidatorClass implements Validator {
         flattenedList.forEach(e -> {
             if (e == null) {
                 errors.rejectValue("nestedList", "The list contains null value.");
-                throw new IllegalArgumentException("NestedList is empty!");
+                throw new IllegalArgumentException("The list contains null value.");
             }
         });
     }
