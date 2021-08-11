@@ -5,6 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import javax.xml.bind.ValidationException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,13 +19,17 @@ public class ValidatorClass implements Validator {
     }
 
     @Override
-    public void validate(Object target, Errors errors) throws IllegalArgumentException {
+    public void validate(Object target, Errors errors) throws NullPointerException {
         ValidationUtils.rejectIfEmpty(errors, "nestedList", "nestedList.empty");
         List<List<Integer>> nestedList = (List<List<Integer>>) target;
 
         if (nestedList.isEmpty()) {
             errors.rejectValue("nestedList", "NestedList is empty!");
-            throw new IllegalArgumentException("NestedList is empty!");
+            try {
+                throw new ValidationException("NestedList is empty!");
+            } catch (ValidationException e) {
+                e.printStackTrace();
+            }
         }
 
         List<Integer> flattenedList = makeFlattenedList((List<List<Integer>>) nestedList);
@@ -32,7 +37,7 @@ public class ValidatorClass implements Validator {
         flattenedList.forEach(e -> {
             if (e == null) {
                 errors.rejectValue("nestedList", "The list contains null value.");
-                throw new IllegalArgumentException("The list contains null value.");
+                throw new NullPointerException("The list contains null value.");
             }
         });
     }

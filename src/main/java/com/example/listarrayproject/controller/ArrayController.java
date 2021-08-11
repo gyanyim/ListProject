@@ -18,7 +18,17 @@ public class ArrayController {
     @Autowired
     private final ArrayService arrayService;
 
-    @GetMapping("/flatten")
+    @GetMapping("/flatten1")
+    public List<Integer> getFlattenedList(@RequestParam List<List<Integer>> nestedList) throws ValidationException {
+        return arrayService.getFlattenedList(nestedList);
+    }
+
+    @GetMapping("/flatten2")
+    public List<Integer> getFlattenedListString(@RequestParam String nestedString) throws ValidationException {
+        return arrayService.getFlattenedListString(nestedString);
+    }
+
+    @GetMapping("/flatten3")
     public List<Integer> getFlattenedList(@RequestParam List<Integer> listOne,
                                           @RequestParam List<Integer> listTwo,
                                           @RequestParam List<Integer> listThree,
@@ -26,4 +36,5 @@ public class ArrayController {
         List<List<Integer>> nestedList = asList(listOne, listTwo, listThree, listFour);
         return arrayService.getFlattenedList(nestedList);
     }
+
 }

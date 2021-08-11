@@ -1,7 +1,6 @@
 package com.example.listarrayproject.controller;
 
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,8 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,40 +28,20 @@ class ArrayControllerTest {
     }
 
     @Test
-    void controllerListsTest() {
-        String listString = given()
-                .log()
-                .all()
-                .body(givenANestedList())
-                .contentType(ContentType.JSON)
+    void controllerListTest() {
+        String nestedListResult = given().log().all()
+                .param("nestedList", givenANestedListString())
                 .when()
-                .get("test/list1")
-                .then()
-                .log()
-                .all()
+                .get("lists/flatten2")
+                .then().log().all()
                 .statusCode(200)
-                .assertThat()
                 .extract().asString();
 
-        List<Integer> listInteger = new ArrayList<>();
-        String[] tmpArray = listString.split(",");
-
-        // Cut the [ from the String
-        tmpArray[0] = tmpArray[0].substring(1);
-
-        // Cut the ] from the String
-        tmpArray[tmpArray.length - 1] = tmpArray[tmpArray.length - 1].substring(0, 1);
-
-        // Parse the number from String to Integer
-        Arrays.asList(tmpArray).forEach(oneString -> listInteger.add(Integer.parseInt(oneString)));
-
-        // Check the flattenedList numbers with the response numbers
-        listInteger.forEach(oneInteger -> assertTrue(flattenedList().contains(oneInteger)));
     }
 
     private List<Integer> flattenedList() {
-       return asList(1, 3, 5, 2, 11, 23, 41, 4, 9, 0);
-   }
+        return asList(1, 3, 5, 2, 11, 23, 41, 4, 9, 0);
+    }
 
     private List<List<Integer>> givenANestedList() {
         return asList(
@@ -73,4 +50,10 @@ class ArrayControllerTest {
                 Collections.singletonList(41),
                 asList(4, 9, 0));
     }
+
+    private String givenANestedListString() {
+        return "1, 4, 6, 6, 7";
+
+    }
+
 }
