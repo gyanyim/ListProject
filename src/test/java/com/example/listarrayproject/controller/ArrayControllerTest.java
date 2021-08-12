@@ -13,7 +13,6 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -30,9 +29,9 @@ class ArrayControllerTest {
     @Test
     void controllerListTest() {
         String nestedListResult = given().log().all()
-                .param("nestedListString", givenANestedListString())
+                .param("nestedListString", givenANestedList())
                 .when()
-                .get("lists/flatten2")
+                .get("lists/flatten1")
                 .then().log().all()
                 .statusCode(200)
                 .extract().asString();
@@ -50,10 +49,4 @@ class ArrayControllerTest {
                 Collections.singletonList(41),
                 asList(4, 9, 0));
     }
-
-    private String givenANestedListString() {
-        return "1, 4, 6, 6, 7";
-
-    }
-
 }
