@@ -30,7 +30,7 @@ class ArrayControllerTest {
     @Test
     void controllerListTest() {
         String nestedListResult = given().log().all()
-                .param("nestedList", givenANestedListString())
+                .param("nestedListString", givenANestedListString())
                 .when()
                 .get("lists/flatten2")
                 .then().log().all()
