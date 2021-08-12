@@ -1,6 +1,7 @@
 package com.example.listarrayproject.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.xml.bind.ValidationException;
 import java.util.ArrayList;
@@ -45,26 +46,26 @@ public class ArrayService {
     }
 
     private void validateStringList(String nestedString) throws ValidationException {
-        if (nestedString.isEmpty()) {
-           throw new ValidationException("The nestedList is empty!");
-       }
+        if (!StringUtils.hasText(nestedString)) {
+            throw new ValidationException("The nestedList is empty or null!");
+        }
 
         Stack<String> tmpStack = new Stack();
 
         for (int i = 0; i < nestedString.length(); i++) {
-          if (nestedString.charAt(i) == '(') {
-              tmpStack.push(nestedString.substring(i, i+1));
-          }
+            if (nestedString.charAt(i) == '(') {
+                tmpStack.push(nestedString.substring(i, i + 1));
+            }
             if (nestedString.charAt(i) == ')') {
                 if (tmpStack.isEmpty()) {
-                    throw new ValidationException("The nestedList contains wrong parantheses!");
+                    throw new ValidationException("The nestedList contains wrong parentheses!");
                 } else {
                     tmpStack.pop();
                 }
             }
         }
         if (!tmpStack.isEmpty()) {
-            throw new ValidationException("The nestedList contains wrong parantheses!");
+            throw new ValidationException("The nestedList contains wrong parentheses!");
         }
     }
 
@@ -73,7 +74,7 @@ public class ArrayService {
 
         for (int i = 0; i < nestedString.length() - 1; i++) {
             if (nestedString.charAt(i) != '(' || nestedString.charAt(i) == ')') {
-                resultList.add(Integer.parseInt(nestedString.substring(i, i+1)));
+                resultList.add(Integer.parseInt(nestedString.substring(i, i + 1)));
             }
         }
         return resultList;
