@@ -1,13 +1,14 @@
 package com.example.listarrayproject.controller;
 
 import com.example.listarrayproject.service.ArrayService;
+import com.example.listarrayproject.service.ValidatorClass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.xml.bind.ValidationException;
 import java.util.List;
 
@@ -21,8 +22,20 @@ public class ArrayController {
     @Autowired
     private final ArrayService arrayService;
 
+    @InitBinder("nestedList")
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(new ValidatorClass());
+    }
+
+    @PostMapping("/flatten")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<Integer> createFlattenList(@RequestBody List<List<Integer>> nestedList) throws ValidationException {
+        return arrayService.createFlattenList(nestedList);
+    }
+
+
     @GetMapping("/flatten1")
-    public List<Integer> getFlattenedList(@RequestParam List<List<Integer>> nestedList) throws ValidationException {
+    public List<Integer> getFlattenedList(@Valid @RequestParam List<List<Integer>> nestedList) throws ValidationException {
         return arrayService.getFlattenedList(nestedList);
     }
 

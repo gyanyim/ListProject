@@ -1,6 +1,5 @@
 package com.example.listarrayproject.service;
 
-import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -10,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+
 public class ValidatorClass implements Validator {
 
     @Override
@@ -24,7 +23,7 @@ public class ValidatorClass implements Validator {
         List<List<Integer>> nestedList = (List<List<Integer>>) target;
 
         if (nestedList.isEmpty()) {
-            errors.rejectValue("nestedList", "NestedList is empty!");
+            errors.rejectValue("nestedList", "nestedList.empty!");
             try {
                 throw new ValidationException("NestedList is empty!");
             } catch (ValidationException e) {
@@ -36,7 +35,7 @@ public class ValidatorClass implements Validator {
 
         flattenedList.forEach(e -> {
             if (e == null) {
-                errors.rejectValue("nestedList", "The list contains null value.");
+                errors.rejectValue("nestedList", "nesTedList.null");
                 throw new NullPointerException("The list contains null value.");
             }
         });

@@ -1,5 +1,6 @@
 package com.example.listarrayproject.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.ValidationException;
@@ -7,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class ArrayService {
 
@@ -33,5 +35,10 @@ public class ArrayService {
         return nestedList.stream()
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+    }
+
+    public List<Integer> createFlattenList(List<List<Integer>> nestedList) throws ValidationException {
+        validateIntegerList(nestedList);
+        return makeFlattenedList(nestedList);
     }
 }
